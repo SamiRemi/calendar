@@ -1,9 +1,9 @@
 package events
 
 import (
-	"errors"
 	"time"
 
+	"github.com/SamiRemi/project/app/validation"
 	"github.com/araddon/dateparse"
 )
 
@@ -13,9 +13,13 @@ type Event struct {
 }
 
 func NewEvent(title string, dateStr string) (Event, error) {
+	isValid := validation.IsValidTitle(title)
+	if !isValid {
+		return Event{}, validation.NewTitleError(title)
+	}
 	t, err := dateparse.ParseAny(dateStr)
 	if err != nil {
-		return Event{}, errors.New("Неверный формат даты")
+		return Event{}, validation.NewDateError(dateStr)
 	}
 	return Event{
 		Title:   title,

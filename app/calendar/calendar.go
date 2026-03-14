@@ -26,7 +26,6 @@ func ShowEvent() error {
 		return errors.New("Список пуст")
 	}
 	for _, v := range eventsMap {
-		// Приводим к UTC и выводим с меткой
 		utcTime := v.StartAt.UTC()
 		fmt.Println(v.Title, "", utcTime.Format("02.01.2006 15:04"))
 	}
