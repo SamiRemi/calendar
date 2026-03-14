@@ -5,11 +5,17 @@ import (
 
 	"github.com/SamiRemi/project/app/validation"
 	"github.com/araddon/dateparse"
+	"github.com/google/uuid"
 )
 
 type Event struct {
+	ID      string
 	Title   string
 	StartAt time.Time
+}
+
+func getNextID() string {
+	return uuid.New().String()
 }
 
 func NewEvent(title string, dateStr string) (Event, error) {
@@ -22,6 +28,7 @@ func NewEvent(title string, dateStr string) (Event, error) {
 		return Event{}, validation.NewDateError(dateStr)
 	}
 	return Event{
+		ID:      getNextID(),
 		Title:   title,
 		StartAt: t,
 	}, nil

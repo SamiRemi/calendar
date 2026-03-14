@@ -11,16 +11,21 @@ import (
 
 var eventsMap = make(map[string]events.Event)
 
-func AddEvent(key string, e events.Event) error {
-	if _, ok := eventsMap[key]; ok {
-		return errors.New("Событие с именем " + key + " уже существует!")
+func AddEvent(title string, date string) (events.Event, error) {
+
+	e, err := events.NewEvent(title, date)
+	if err != nil {
+		return e, err
 	}
-	if len(key) == 0 {
-		return errors.New("Нельзя ввести пустое имя")
+	if _, ok := eventsMap[title]; ok {
+		return e, errors.New("Событие с именем " + title + " уже существует!")
 	}
-	eventsMap[key] = e
+	if len(title) == 0 {
+		return e, errors.New("Нельзя ввести пустое имя")
+	}
+	eventsMap[e.ID] = e
 	fmt.Println("Событие добавлено:", e.Title)
-	return nil
+	return e, nil
 }
 
 func ShowEvent() error {
@@ -35,14 +40,22 @@ func ShowEvent() error {
 }
 
 func DeleteEvent(title string) error {
+	e := eventsMap[title]
 	if _, ok := eventsMap[title]; !ok {
 		return errors.New("Событие с именем " + title + " не существует")
 	}
 	delete(eventsMap, title)
+	fmt.Println("=========================")
+	fmt.Println("Событие :", e.Title)
+	fmt.Println("С ID :", e.ID)
+	fmt.Println("Удалено")
+	fmt.Println("=========================")
+	fmt.Println("")
 	return nil
 }
 
 func EditEvent(name, newTitle, dateStr string) error {
+	e := eventsMap[name]
 	date, dateErr := dateparse.ParseAny(dateStr)
 	if dateErr != nil {
 		return dateErr
@@ -55,7 +68,12 @@ func EditEvent(name, newTitle, dateStr string) error {
 		Title:   newTitle,
 		StartAt: date,
 	}
-	fmt.Println("Событие", name, "успешно изменено!")
+	fmt.Println("=========================")
+	fmt.Println("Событие :", name)
+	fmt.Println("С ID :", e.ID)
+	fmt.Println("УСпешно изменено")
+	fmt.Println("=========================")
+	fmt.Println("")
 	return nil
 }
 

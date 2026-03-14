@@ -2,14 +2,8 @@ package validation
 
 import (
 	"errors"
-	"fmt"
 	"regexp"
 )
-
-func ErrorDisplay(err error) {
-	fmt.Println("Ошибка создания события :", err)
-
-}
 
 func NewTitleError(title string) error {
 	return errors.New("Неверный формат заголовка" + " '" + title + "'")

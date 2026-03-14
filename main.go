@@ -1,30 +1,35 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/SamiRemi/project/app/calendar"
-	"github.com/SamiRemi/project/app/events"
-	"github.com/SamiRemi/project/app/validation"
 )
 
 func main() {
 
-	e, err := events.NewEvent("Встреча", "2026/03/05 20:00")
-	if err != nil {
-		validation.ErrorDisplay(err)
-		return
-	}
-	e1, err1 := events.NewEvent("учеба", "2026.03.04")
+	event1, err1 := calendar.AddEvent("Поспать", "2026/03/19 03:00")
 	if err1 != nil {
-		validation.ErrorDisplay(err1)
+		fmt.Println("Ошибка:", err1)
 		return
 	}
-	calendar.AddEvent("event", e)
-	calendar.AddEvent("event1", e1)
-	calendar.AddEvent("event3", e)
-	calendar.DeleteEvent("event")
-	calendar.EditEvent("event3", "созвон", "2026/03/19 20:00")
+
+	event2, err2 := calendar.AddEvent("Еще одна встреча", "2026/03/26 20:00")
+	if err2 != nil {
+		fmt.Println("Ошибка:", err2)
+		return
+	}
+
 	calendar.ShowEvent()
+	calendar.DeleteEvent(event1.ID)
+
+	err := calendar.EditEvent(event2.ID, "Созвон", "2026/03/26 20:00")
+	if err != nil {
+		fmt.Println("Ошибка:", err)
+	}
+
+	calendar.ShowEvent()
+
 	time.Sleep(5 * time.Second)
 }
