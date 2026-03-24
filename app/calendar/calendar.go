@@ -1,24 +1,28 @@
 package calendar
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 
 	"github.com/SamiRemi/project/app/events"
+	"github.com/SamiRemi/project/app/storage"
 )
 
 type Calendar struct {
 	calendarEvents map[string]*events.Event
+	storage        storage.Store
 }
 
-func NewCalendar() *Calendar {
+func NewCalendar(s storage.Store) *Calendar {
 	return &Calendar{
 		calendarEvents: make(map[string]*events.Event),
+		storage:        s,
 	}
 }
-func (c *Calendar) AddEvent(title string, date string) (*events.Event, error) {
+func (c *Calendar) AddEvent(title, date string, priority events.Priority) (*events.Event, error) {
 
-	e, err := events.NewEvent(title, date)
+	e, err := events.NewEvent(title, date, priority)
 	if err != nil {
 		return e, err
 	}
@@ -38,7 +42,7 @@ func (c *Calendar) ShowEvent() error {
 	}
 	for _, v := range c.calendarEvents {
 		utcTime := v.StartAt.UTC()
-		fmt.Println(v.Title, "", utcTime.Format("02.01.2006 15:04"))
+		fmt.Println(v.Title, "", utcTime.Format("02.01.2006 15:04"), "", v.Priority)
 	}
 	return nil
 }
@@ -73,5 +77,28 @@ func (c *Calendar) EditEvent(id, newTitle, dateStr string) error {
 	fmt.Println("УСпешно изменено")
 	fmt.Println("=========================")
 	fmt.Println("")
+	return nil
+}
+
+func (c *Calendar) Save() error {
+	date, err := json.Marshal(c.calendarEvents)
+	if err != nil {
+		return err
+	}
+	err = c.storage.Save(date)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+func (c *Calendar) Load() error {
+	data, err := c.storage.Load()
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(data, &c.calendarEvents)
+	if err != nil {
+		return err
+	}
 	return nil
 }
