@@ -1,0 +1,12 @@
+SYSTEM: 2026/04/07 23:48:08 main.go:15: Запуск системы
+INFO: 2026/04/07 23:48:08 json-storage.go:14: Запуск функции  NewJsonStorage
+SYSTEM: 2026/04/07 23:48:08 main.go:17: Создано хранилище
+INFO: 2026/04/07 23:48:08 json-storage.go:30: Запуск функции  Load
+INFO: 2026/04/07 23:48:08 storage.go:16: Запуск функции GetFilename
+INFO: 2026/04/07 23:48:16 json-storage.go:30: Запуск функции  Load
+INFO: 2026/04/07 23:48:16 storage.go:16: Запуск функции GetFilename
+INFO: 2026/04/07 23:48:16 calendar.go:95: Запуск функции ShowEvent
+INFO: 2026/04/07 23:48:32 json-storage.go:30: Запуск функции  Load
+INFO: 2026/04/07 23:48:32 storage.go:16: Запуск функции GetFilename
+INFO: 2026/04/07 23:48:32 json-storage.go:21: Запуск функции  Save
+INFO: 2026/04/07 23:48:32 storage.go:16: Запуск функции GetFilename
